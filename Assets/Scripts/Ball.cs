@@ -19,10 +19,28 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _yMax;
 
     private Vector2 _startDirection;
+    private Vector3 _startPosition;
+    private bool _isStarted;
 
     #endregion
 
 
+    private void Awake()
+    {
+        _startPosition = transform.position;
+    }
+    private void Update()
+    {
+        if (_isStarted)
+            return;
+
+        MoveWithPad();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            StartBall();
+        }
+    }
     #region Private methods
 
     private void OnDrawGizmos()
@@ -49,6 +67,20 @@ public class Ball : MonoBehaviour
         currentPosition.x = padPosition.x;
         transform.position = currentPosition;
     }
+    private void StartBall()
+    {
+        _isStarted = true;
+        StartMove();
+    }
 
     #endregion
+
+
+    public void ToDefaultState()
+    {
+        _isStarted = false;
+        _rb.velocity = Vector2.zero;
+        transform.position = _startPosition;
+
+    }
 }

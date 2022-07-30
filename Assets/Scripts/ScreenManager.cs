@@ -8,6 +8,7 @@ public class ScreenManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _scoreLable;
     [SerializeField] private TextMeshProUGUI _lifeLable;
+    [SerializeField] private GameObject[] _heartPrefab;
 
     #endregion
 
@@ -18,6 +19,12 @@ public class ScreenManager : MonoBehaviour
     {
         Statistics.Instance.OnScoreChanged += SetScoreLable;
         Statistics.Instance.OnLifeLeft += SetLifeLable;
+        for (var i = 0; i < 5; i++)
+        {
+            int j = 100;
+            j = +100;
+            Instantiate(_heartPrefab[0], new Vector3(253 + j, -56, 0), Quaternion.identity);
+        }
     }
 
     private void OnDestroy()

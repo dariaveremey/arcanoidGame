@@ -20,13 +20,14 @@ public class LostZone : MonoBehaviour
     {
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D col)
 
     {
-        if (collision.gameObject.TryGetComponent(out Ball ball))
+        if (col.gameObject.CompareTag(Tags.Ball))
         {
             Statistics.Instance.IncrementLife();
-            ball.MoveWithPad();
+            Ball component = col.gameObject.GetComponent<Ball>();
+            component.MoveWithPad(); 
         }
     }
 

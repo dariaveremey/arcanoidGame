@@ -2,24 +2,31 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameState : MonoBehaviour
+public class GameState : MonoBehaviour //UIController
 {
     #region Variables
 
-    [SerializeField] private GameObject _gameOver;
-    [SerializeField] private GameObject _pauseMenu;
-    //[SerializeField] private GameObject _gameWin;
+    [SerializeField] private GameObject _gameOverScreen;
+    [SerializeField] private GameObject _pauseMenuScreen;
+    [SerializeField] private GameObject _gameWinScreen;
 
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _exitButton;
 
-    [SerializeField] private TextMeshProUGUI _gameOverLable;
+    //[SerializeField] private TextMeshProUGUI _gameOverLable;
 
     #endregion
 
 
     #region Unity lifecycle
+
+    private void Awake()
+    {
+        _gameOverScreen.SetActive(false);
+        _pauseMenuScreen.SetActive(false);
+        _gameWinScreen.SetActive(false);
+    }
 
     private void Start()
     {
@@ -42,19 +49,19 @@ public class GameState : MonoBehaviour
 
     #region Private methods
 
-    private void GameOver()
+    private void GameOver(bool isGameOver)
     {
-        _gameOver.SetActive(true);
+        _gameOverScreen.SetActive(isGameOver);
     }
 
     private void ContinueGame(bool isPaused)
     {
-        _pauseMenu.SetActive(isPaused);
+        _pauseMenuScreen.SetActive(isPaused);
     }
 
     private void GameWin(bool isWon)
     {
-        //_gameWin.SetActive(isWon);
+        _gameWinScreen.SetActive(isWon);
     }
 
     #endregion

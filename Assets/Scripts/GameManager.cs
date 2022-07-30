@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
     #region Variables
 
-    [SerializeField] private Ball _ball;
+    //[SerializeField] private Ball _ball;
 
     private bool _isStarted;
 
@@ -19,18 +19,7 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<LevelManager>().OnBlocksDestroyed += PerformWin;
     }
 
-    private void Update()
-    {
-        if (_isStarted)
-            return;
 
-        _ball.MoveWithPad();
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            StartBall();
-        }
-    }
 
     private void OnDestroy()
     {
@@ -42,11 +31,7 @@ public class GameManager : MonoBehaviour
 
     #region Private methods
 
-    private void StartBall()
-    {
-        _isStarted = true;
-        _ball.StartMove();
-    }
+
 
     #endregion
 
