@@ -1,10 +1,14 @@
 using System;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour
 {
     #region Viriables
 
+    [Header("Block")]
     [SerializeField] private int _numberDestroy;
     [SerializeField] private int _points;
 
@@ -12,6 +16,12 @@ public class Block : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private bool _invisibility;
+
+    [Header("PickUp")]
+    [SerializeField] private GameObject[] _pickUpPrefab;
+
+    [Range(0, 1f)]
+    [SerializeField] private float _pickUpSpawnChange;
 
     #endregion
 
@@ -70,6 +80,7 @@ public class Block : MonoBehaviour
         {
             Statistics.Instance.IncrementScore(_points);
             Destroy(gameObject);
+            SpawnPickUp();
             return;
         }
     }
@@ -85,6 +96,21 @@ public class Block : MonoBehaviour
     private void Visibility()
     {
         _spriteRenderer.color = new Color(255, 255, 255, 255);
+    }
+
+    private void SpawnPickUp()
+    {
+        if (_pickUpPrefab.Length == default)
+            return;
+
+        float random = Random.Range(0, 1f);
+        int randomIndex = Random.Range(0, _pickUpPrefab.Length);
+
+
+        if (random <= _pickUpSpawnChange)
+        {
+            Instantiate(_pickUpPrefab[randomIndex], transform.position, Quaternion.identity);
+        }
     }
 
     #endregion

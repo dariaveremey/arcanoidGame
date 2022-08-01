@@ -5,9 +5,8 @@ public class GameManager : MonoBehaviour
 {
     #region Variables
 
-    //[SerializeField] private Ball _ball;
-
     private bool _isStarted;
+    [SerializeField] private int _startHp;
 
     #endregion
 
@@ -19,8 +18,6 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<LevelManager>().OnBlocksDestroyed += PerformWin;
     }
 
-
-
     private void OnDestroy()
     {
         FindObjectOfType<LevelManager>().OnBlocksDestroyed -= PerformWin;
@@ -31,8 +28,6 @@ public class GameManager : MonoBehaviour
 
     #region Private methods
 
-
-
     #endregion
 
 
@@ -41,8 +36,7 @@ public class GameManager : MonoBehaviour
     public void PerformWin()
     {
         SceneLoader.Instance.LoadScene();
-        // TODO:REAL LOGIC
-        //WinManager.Instance.ToggleWin();
+        WinManager.Instance.Win();
     }
 
     #endregion

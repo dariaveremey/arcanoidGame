@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameState : MonoBehaviour //UIController
+public class GameState : MonoBehaviour
 {
     #region Variables
 
@@ -13,8 +13,6 @@ public class GameState : MonoBehaviour //UIController
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _exitButton;
-
-    //[SerializeField] private TextMeshProUGUI _gameOverLable;
 
     #endregion
 
@@ -34,14 +32,14 @@ public class GameState : MonoBehaviour //UIController
         PauseManager.Instance.OnPaused += ContinueGame;
         _continueButton.onClick.AddListener(PauseManager.Instance.TogglePause);
         _exitButton.onClick.AddListener(ExitGame.ExitButtonClicked);
-        //WinManager.Instance.OnGameWon  += GameWin;
+        WinManager.Instance.OnGameWon += GameWin;
     }
 
     private void OnDestroy()
     {
         Statistics.Instance.OnLost -= GameOver;
         PauseManager.Instance.OnPaused -= ContinueGame;
-        //WinManager.Instance.OnGameWon  -= GameWin;
+        WinManager.Instance.OnGameWon -= GameWin;
     }
 
     #endregion

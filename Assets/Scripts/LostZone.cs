@@ -25,9 +25,15 @@ public class LostZone : MonoBehaviour
     {
         if (col.gameObject.CompareTag(Tags.Ball))
         {
-            Statistics.Instance.IncrementLife();
+            Statistics.Instance.IncrementLife(-1);
             Ball component = col.gameObject.GetComponent<Ball>();
+            component.ToDefaultState();
             component.MoveWithPad(); 
+        }
+        else
+        {
+            Destroy(col.gameObject);
+
         }
     }
 
@@ -35,11 +41,6 @@ public class LostZone : MonoBehaviour
 
 
     #region Public methods
-
-    public void RestartLevel()
-    {
-        SceneManager.LoadScene("GameScene");
-    }
-
+    
     #endregion
 }

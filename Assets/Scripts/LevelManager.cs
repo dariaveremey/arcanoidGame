@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
 
         {
             OnBlocksDestroyed?.Invoke();
-            //SceneLoader.Instance.LoadScene();
+            SceneLoader.Instance.LoadScene();
         }
     }
 

@@ -8,8 +8,16 @@ public class Statistics : SingletonMonoBehavior<Statistics>
     #region Variables
 
     [SerializeField] private int _lifes;
+    [SerializeField] private bool _needAutoPlay;
 
     private int _lifeNumber = 5;
+
+    #endregion
+
+
+    #region MyRegion
+
+    public bool NeedAutoPlay => _needAutoPlay;
 
     #endregion
 
@@ -39,19 +47,18 @@ public class Statistics : SingletonMonoBehavior<Statistics>
         OnScoreChanged?.Invoke(ScoreNumber);
     }
 
-    public void IncrementLife()
+    public void IncrementLife(int number)
     {
-        _lifeNumber -= 1;
+        _lifeNumber += number;
+        if (_lifeNumber >= 5)
+            _lifeNumber = 5;
         OnLifeLeft?.Invoke(_lifeNumber);
-        FindObjectOfType<Ball>().ToDefaultState();
-        //HeartControler.Instance.HeartDestroy(_lifeNumber);
         if (_lifeNumber == 0)
         {
             PauseManager.Instance.TogglePause();
             OnLost?.Invoke(true);
         }
     }
-
 
     #endregion
 }

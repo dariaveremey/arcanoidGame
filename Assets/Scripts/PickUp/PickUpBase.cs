@@ -2,23 +2,30 @@ using UnityEngine;
 
 public abstract class PickUpBase : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        PlayMusic();
-        PlayParticle();
-        ApplyEffect(col);
-        Destroy(gameObject);
-    }
+ #region Private methods
 
-    private void PlayParticle()
-    {
-       //TODO: Add Particle
-    }
+ private void OnCollisionEnter2D(Collision2D col)
+ {
+  if (!col.gameObject.CompareTag(Tags.Pad))
+   return;
+  PlayMusic();
+  PlayParticle();
+  ApplyEffect(col);
+  Destroy(gameObject);
+ }
 
-    private void PlayMusic()
-    {
-        //ToDO: Add Music
-    }
+ private void PlayParticle()
+ {
+  //TODO: Add Particle
+ }
 
-    protected abstract void ApplyEffect(Collision2D col);
+ private void PlayMusic()
+ {
+  //ToDO: Add Music
+ }
+
+ protected abstract void ApplyEffect(Collision2D col);
+
+ #endregion
+    
 }

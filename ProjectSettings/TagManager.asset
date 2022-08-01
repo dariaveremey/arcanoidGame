@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ball
+  - Pad
+  - FalseBall
+  - MoveWithPadPickUp
   layers:
   - Default
   - TransparentFX
@@ -12,12 +15,12 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ball
+  - Block
+  - Pad
+  - LostZone
+  - PickUps
+  - FalseBalls
   - 
   - 
   - 
