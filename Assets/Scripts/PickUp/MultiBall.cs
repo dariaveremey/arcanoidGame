@@ -4,13 +4,19 @@ class MultiBall: PickUpBase
 {
     #region Private methods
 
-    protected override void ApplyEffect(Collision2D col)
+    [SerializeField] private int _multiBall;
+
+        protected override void ApplyEffect(Collision2D col)
     {
-        //   foreach (Ball ball in FindObjectOfType<Ball>().Balls.ToList())
-        //{
-        //  FindObjectOfType<Ball>().MultiBall(true);
-        //}
-        FindObjectOfType<Ball>().MultiBall(true);
+        Ball[] balls = FindObjectsOfType<Ball>();
+        foreach (Ball ball in balls)
+        {
+            for (int i = 0; i < _multiBall; i++)
+            {
+                    
+            }
+        }
+
     }
 
     #endregion

@@ -2,6 +2,10 @@ using UnityEngine;
 
 public abstract class PickUpBase : MonoBehaviour
 {
+ 
+ 
+ 
+ 
  #region Private methods
 
  private void OnCollisionEnter2D(Collision2D col)

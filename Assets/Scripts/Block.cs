@@ -18,10 +18,9 @@ public class Block : MonoBehaviour
     [SerializeField] private bool _invisibility;
 
     [Header("PickUp")]
-    [SerializeField] private GameObject[] _pickUpPrefab;
-
-    [Range(0, 1f)]
-    [SerializeField] private float _pickUpSpawnChange;
+    [Range(0f, 1f)]
+    [SerializeField] private float _pickUpSpawnChance;
+    [SerializeField] private PickUpInfo[] _pickUpInfoArray;
 
     #endregion
 
@@ -45,7 +44,6 @@ public class Block : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D col)
     {
         ChangeDestroyNumber();
-        ChangeScore();
         SetSprite();
         Visibility();
     }
@@ -53,6 +51,19 @@ public class Block : MonoBehaviour
     private void OnDestroy()
     {
         OnDestroyed?.Invoke(this);
+    }
+
+    private void OnValidate()
+    {
+        if (_pickUpInfoArray == null || _pickUpInfoArray.Length == 0)
+        {
+            return;
+        }
+
+        foreach (PickUpInfo pickUpInfo in _pickUpInfoArray)
+        {
+            pickUpInfo.OnVolidate();
+        }
     }
 
     #endregion
@@ -72,17 +83,17 @@ public class Block : MonoBehaviour
     private void ChangeDestroyNumber()
     {
         _numberDestroy--;
-    }
-
-    private void ChangeScore()
-    {
         if (_numberDestroy == 0)
         {
-            Statistics.Instance.IncrementScore(_points);
-            Destroy(gameObject);
-            SpawnPickUp();
-            return;
+            DestroyActions();
         }
+    }
+
+    private void DestroyActions()
+    {
+        Statistics.Instance.IncrementScore(_points);
+        Destroy(gameObject);
+        SpawnPickUp();
     }
 
     private void Invisibility()
@@ -100,17 +111,45 @@ public class Block : MonoBehaviour
 
     private void SpawnPickUp()
     {
-        if (_pickUpPrefab.Length == default)
-            return;
-
-        float random = Random.Range(0, 1f);
-        int randomIndex = Random.Range(0, _pickUpPrefab.Length);
-
-
-        if (random <= _pickUpSpawnChange)
+        if (_pickUpInfoArray == null && _pickUpInfoArray.Length == 0)
         {
-            Instantiate(_pickUpPrefab[randomIndex], transform.position, Quaternion.identity);
+            return;
         }
+        
+        float random = Random.Range(0, 1f);
+        if (random > _pickUpSpawnChance)
+        {
+            return;
+        }
+
+        int chanceSum = 0;
+
+        foreach (PickUpInfo pickUpInfo in _pickUpInfoArray)
+        {
+            chanceSum += pickUpInfo.SpawnChance;
+        }
+
+        int randomChance = Random.Range(0, chanceSum);
+        int currentChance = 0;
+        int currentIndex = 0;
+
+
+        for (int i = 0; i < _pickUpInfoArray.Length; i++)
+        {
+            PickUpInfo pickUpInfo = _pickUpInfoArray[i];
+            currentChance += pickUpInfo.SpawnChance;
+
+
+            if (currentChance >= randomChance)
+            {
+                currentIndex = i;
+                break;
+            }
+        }
+
+        PickUpBase pickUpPrefab = _pickUpInfoArray[currentIndex].PickUpPrefab;
+        Instantiate(pickUpPrefab, transform.position, Quaternion.identity);
+        
     }
 
     #endregion

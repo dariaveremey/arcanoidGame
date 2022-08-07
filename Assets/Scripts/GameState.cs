@@ -30,6 +30,7 @@ public class GameState : MonoBehaviour
     {
         Statistics.Instance.OnLost += GameOver;
         PauseManager.Instance.OnPaused += ContinueGame;
+        SceneLoader.Instance.OnGameWon += GameWin;
         _continueButton.onClick.AddListener(PauseManager.Instance.TogglePause);
         _exitButton.onClick.AddListener(ExitGame.ExitButtonClicked);
         WinManager.Instance.OnGameWon += GameWin;
@@ -40,6 +41,7 @@ public class GameState : MonoBehaviour
         Statistics.Instance.OnLost -= GameOver;
         PauseManager.Instance.OnPaused -= ContinueGame;
         WinManager.Instance.OnGameWon -= GameWin;
+        SceneLoader.Instance.OnGameWon -= GameWin;
     }
 
     #endregion

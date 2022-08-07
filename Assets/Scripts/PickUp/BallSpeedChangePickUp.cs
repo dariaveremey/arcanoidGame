@@ -1,11 +1,11 @@
  using UnityEngine;
 
- public class BallSpeadChangePickUp:PickUpBase
+ public class BallSpeedChangePickUp:PickUpBase
  {
 
      #region Variables
 
-     [Header(nameof(BallSpeadChangePickUp))]
+     [Header(nameof(BallSpeedChangePickUp))]
      [SerializeField] private float _speedMultiplier;
 
      #endregion

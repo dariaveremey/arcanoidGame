@@ -1,6 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public class Ball : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class Ball : MonoBehaviour
     [SerializeField] private Pad _pad;
     [SerializeField] private float _speed = 9f;
     [SerializeField] private float _minSpead = 1f;
-    [SerializeField] private float _minSize = 0.5f;
+    [SerializeField] private float _maxSpead = 10f;
+    [SerializeField] private float _minSize = 0.45f;
+    [SerializeField] private float _maxSize = 1.95f;
 
     [Range(0, 1)]
     [SerializeField] private float _xMin;
@@ -22,15 +25,24 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _yMax;
 
     private bool _isStarted;
+    private bool _isBallCloned;
     private Vector2 _startDirection;
-    private Vector2 _startMultiBall;
+    private Vector2 _isMultiBall;
     private Vector3 _startPosition;
     private Vector3 _startScale;
     private Vector3 _currentBallPosition;
+    private Vector2 _contactPoint;
 
-    [SerializeField] GameObject _ball;
+    [SerializeField] private float _originalSpeed;
+    [SerializeField] private float _originalOffset;
+    [SerializeField] private float _offset;
+    [SerializeField] private Ball _ball;
+    private readonly Vector3 _originalSize = Vector3.one;
 
-    private readonly List<GameObject> _saveBalls = new List<GameObject>();
+    private readonly List<Ball> _saveBalls = new List<Ball>();
+
+    public int SavedBallLength => _saveBalls.Count;
+    private bool _isNewBall;
 
     #endregion
 
@@ -39,25 +51,35 @@ public class Ball : MonoBehaviour
 
     private void Awake()
     {
-        CreateBall();
         _startPosition = transform.position;
     }
 
     private void Start()
     {
+        if (_isBallCloned)
+        {
+            BallCreate(this);
+            return;
+        }
+
+        _speed = _originalSpeed;
+        ResetBall();
         if (Statistics.Instance.NeedAutoPlay)
+        {
             StartBall();
+        }
     }
 
     private void Update()
     {
         _currentBallPosition = transform.position;
         if (_isStarted)
+        {
             return;
+        }
+
 
         MoveWithPad();
-        
-        MultiBall(false);
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -70,18 +92,6 @@ public class Ball : MonoBehaviour
 
     #region Private methods
 
-    private void CreateBall()
-    {
-        _saveBalls.Add(_ball);
-    }
-
-   /* private void CreateFalseBall()
-    {
-        _saveBalls.Add(Instantiate(_ball,
-            new Vector3(transform.position.x, transform.position.y, transform.position.z)
-            , Quaternion.identity, transform));
-    }*/
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
@@ -89,6 +99,47 @@ public class Ball : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.position + (Vector3) _rb.velocity);
+    }
+
+    private void BallCreate(Ball ball)
+    {
+        _saveBalls.Add(ball);
+    }
+
+    private void BallDestroy(Ball ball)
+    {
+        _saveBalls.Remove(ball);
+        if (SavedBallLength == 0)
+        {
+        }
+    }
+   
+
+    private void ResetBall()
+    {
+        BallCreate(_ball);
+        _isStarted = false;
+        _contactPoint = Vector2.zero;
+
+        ResetSize();
+        ResetSpeed();
+        MoveWithPad();
+        ResetOffset();
+    }
+
+    private void ResetSpeed()
+    {
+        _speed = _originalSpeed;
+    }
+
+    private void ResetSize()
+    {
+        transform.localScale = _originalSize;
+    }
+    
+    public void ResetOffset()
+    {
+        _offset = _originalOffset;
     }
 
     private void StartBall()
@@ -114,23 +165,30 @@ public class Ball : MonoBehaviour
     {
         Vector3 padPosition = _pad.transform.position;
         Vector3 currentPosition = transform.position;
-        currentPosition.x = padPosition.x;
+        currentPosition.x = padPosition.x - _contactPoint.x;
+        currentPosition.y = padPosition.y + _offset;
         transform.position = currentPosition;
     }
 
     public void ChangeSize(float scale)
     {
         Vector3 changeScale = transform.localScale;
+        changeScale =
+            new Vector3(changeScale.x * scale, changeScale.y * scale, changeScale.z);
         if (changeScale.x < _minSize || changeScale.y < _minSize)
         {
             changeScale =
                 new Vector3(_minSize, _minSize, changeScale.z);
         }
-        else
+
+        if (changeScale.x > _maxSize || changeScale.y > _maxSize)
         {
             changeScale =
-                new Vector3(changeScale.x + scale, changeScale.y + scale, changeScale.z);
+                new Vector3(_maxSize, _maxSize, changeScale.z);
         }
+
+
+        transform.localScale = changeScale;
     }
 
     public void ToDefaultState()
@@ -146,21 +204,24 @@ public class Ball : MonoBehaviour
         float velocityMagnitude = velocity.magnitude;
         velocityMagnitude *= speedMultiplier;
 
-        if (velocityMagnitude < _minSpead) ;
-        velocityMagnitude = _minSpead;
+        if (velocityMagnitude < _minSpead)
+            velocityMagnitude = _minSpead;
 
         _rb.velocity = velocity.normalized * velocityMagnitude;
     }
 
-    public void MultiBall(bool activate)
+    public void SetContactPoint(Vector2 contactPoint)
     {
-        if (activate == false || _saveBalls.Count==3)
-            return;
-        //foreach (var item in _saveBalls)
-        for (int i = 0; _saveBalls.Count < 3; i++)
-        { 
-            _saveBalls.Add(Instantiate(_saveBalls[0], _saveBalls[0].transform.position, Quaternion.identity));
+        _isStarted = false;
+        _contactPoint = contactPoint;
+        _offset = 6f;
+    }
 
+    public void OnBallFall()
+    {
+        BallDestroy(this);
+        if (SavedBallLength == 0)
+        {
         }
     }
 
