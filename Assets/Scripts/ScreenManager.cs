@@ -18,6 +18,8 @@ public class ScreenManager : MonoBehaviour
     {
         Statistics.Instance.OnScoreChanged += SetScoreLable;
         Statistics.Instance.OnLifeLeft += SetLifeLable;
+        SetScoreLable(Statistics.Instance.ScoreNumber);
+        SetLifeLable(Statistics.Instance.LifeNumber);
     }
 
     private void OnDestroy()

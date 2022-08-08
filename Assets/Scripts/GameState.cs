@@ -13,6 +13,8 @@ public class GameState : MonoBehaviour
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _exitButton;
+    
+
 
     #endregion
 
@@ -33,14 +35,14 @@ public class GameState : MonoBehaviour
         SceneLoader.Instance.OnGameWon += GameWin;
         _continueButton.onClick.AddListener(PauseManager.Instance.TogglePause);
         _exitButton.onClick.AddListener(ExitGame.ExitButtonClicked);
-        WinManager.Instance.OnGameWon += GameWin;
+        //WinManager.Instance.OnGameWon += GameWin;
     }
 
     private void OnDestroy()
     {
         Statistics.Instance.OnLost -= GameOver;
         PauseManager.Instance.OnPaused -= ContinueGame;
-        WinManager.Instance.OnGameWon -= GameWin;
+        //WinManager.Instance.OnGameWon -= GameWin;
         SceneLoader.Instance.OnGameWon -= GameWin;
     }
 
@@ -61,7 +63,7 @@ public class GameState : MonoBehaviour
 
     private void GameWin(bool isWon)
     {
-        _gameWinScreen.SetActive(isWon);
+        _gameWinScreen.SetActive(isWon); 
     }
 
     #endregion

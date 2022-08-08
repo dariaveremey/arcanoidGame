@@ -11,9 +11,12 @@ public class SceneLoader : SingletonMonoBehavior<SceneLoader>
     [Range(0,4)]
     [SerializeField] private int _randomScene;
     
+    [SerializeField] private AudioClip _audioWonMusic;
+    [SerializeField] private AudioClip _audioNewLevelMusic;
+    
     public event Action<bool> OnGameWon;
     
-    public static List<string> _scenesNames = 
+    private static List<string> _scenesNames = 
         new List<string>() { "GameScene 1", "Level 2", "Level 3", "Level 4", "Level 5" };
     
     #endregion
@@ -28,13 +31,14 @@ public class SceneLoader : SingletonMonoBehavior<SceneLoader>
         if (_scenesNames.Count == 0)
         {
             OnGameWon?.Invoke(true);
+            AudioPlayer.Instance.PlaySound(_audioWonMusic);
             return;
         }
         _randomScene = Random.Range(0, _scenesNames.Count-1);
         SceneManager.LoadScene(_scenesNames[_randomScene]);
+        AudioPlayer.Instance.PlaySound(_audioNewLevelMusic);
         _scenesNames.Remove(_scenesNames[_randomScene]);
-        Debug.Log($"{_scenesNames.Count}");
-   
+
     }
 
     public void LoadStartSceneScene()

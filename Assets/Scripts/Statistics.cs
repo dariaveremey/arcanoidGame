@@ -35,6 +35,7 @@ public class Statistics : SingletonMonoBehavior<Statistics>
     #region Properties
 
     public int ScoreNumber { get; private set; }
+    public int LifeNumber { get; private set; } = 5;
 
     #endregion
 
@@ -49,11 +50,11 @@ public class Statistics : SingletonMonoBehavior<Statistics>
 
     public void IncrementLife(int number)
     {
-        _lifeNumber += number;
-        if (_lifeNumber >= 5)
-            _lifeNumber = 5;
-        OnLifeLeft?.Invoke(_lifeNumber);
-        if (_lifeNumber == 0)
+        LifeNumber += number;
+        if (LifeNumber >= 5)
+            LifeNumber = 5;
+        OnLifeLeft?.Invoke(LifeNumber);
+        if (LifeNumber == 0)
         {
             PauseManager.Instance.TogglePause();
             OnLost?.Invoke(true);

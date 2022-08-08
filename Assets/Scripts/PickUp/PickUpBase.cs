@@ -2,9 +2,10 @@ using UnityEngine;
 
 public abstract class PickUpBase : MonoBehaviour
 {
- 
- 
- 
+
+
+ [SerializeField] private AudioClip _audioClip;
+ [SerializeField] private int _addScore;
  
  #region Private methods
 
@@ -15,6 +16,8 @@ public abstract class PickUpBase : MonoBehaviour
   PlayMusic();
   PlayParticle();
   ApplyEffect(col);
+  AudioPlayer.Instance.PlaySound(_audioClip);
+  Statistics.Instance.IncrementScore(_addScore);
   Destroy(gameObject);
  }
 

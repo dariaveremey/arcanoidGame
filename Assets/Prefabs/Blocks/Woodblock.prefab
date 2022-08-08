@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7514674292673099393}
   - component: {fileID: 2040316123953149075}
   - component: {fileID: 5459118538710043321}
-  - component: {fileID: 1291975551912272331}
+  - component: {fileID: 1032004743130615066}
   m_Layer: 7
   m_Name: Woodblock
   m_TagString: Untagged
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1291975551912272331
+--- !u!114 &1032004743130615066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,32 +125,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _numberDestroy: 3
-  _points: 2
+  _points: 3
   _sprites:
   - {fileID: 21300000, guid: 9ffc742867e27478c8de3550c12bd75c, type: 3}
   - {fileID: 21300000, guid: 867a4fec287e04fc4a9b6b7b4d7b3f55, type: 3}
   _spriteRenderer: {fileID: 2040316123953149075}
   _invisibility: 0
-  _pickUpSpawnChance: 0.84
+  _pickUpSpawnChance: 0.7
   _pickUpInfoArray:
   - name: ChangeLifeUpPickUp
     PickUpPrefab: {fileID: 8393362561530039774, guid: 19a6e7ea46825734883d0897951ba3f9, type: 3}
     SpawnChance: 100
-  - name: BallSizeDownPickUp
-    PickUpPrefab: {fileID: 1645912118038359393, guid: 7222f59d4a26bd94b81cbf2dc1fd5828, type: 3}
+  - name: MagnetPickUp
+    PickUpPrefab: {fileID: 1609033734233239284, guid: 00524c849d1f3a94f9cb9e05c85be27d, type: 3}
     SpawnChance: 100
-  - name: BallSizeUpPickUp
-    PickUpPrefab: {fileID: 8107122772092757132, guid: c305b9ecd3080444581a077929283f88, type: 3}
-    SpawnChance: 100
-  - name: ChangeLifeDownPickUp
-    PickUpPrefab: {fileID: 524118760904953302, guid: 028ba06d3cc54c94c832168b0d868463, type: 3}
-    SpawnChance: 100
-  - name: ScoreUpPickUp
-    PickUpPrefab: {fileID: 6899200015771062990, guid: a3e39af5abbd8d0419c56c17a82ee464, type: 3}
+  - name: BallSpeadUpPickUp
+    PickUpPrefab: {fileID: 481612112790415128, guid: 1f3fbeb085dd2f642bd220cb8b400835, type: 3}
     SpawnChance: 100
   - name: PadChangeDownPickUp
     PickUpPrefab: {fileID: 4199174023371433639, guid: 018289e51baf43948b43ab1749c2c97a, type: 3}
     SpawnChance: 100
-  - name: MultyBallPickUp
-    PickUpPrefab: {fileID: 309921044331373918, guid: 34cda7e659dbb2d4986e9211a1196a98, type: 3}
+  - name: ScoreUpPickUp
+    PickUpPrefab: {fileID: 6899200015771062990, guid: a3e39af5abbd8d0419c56c17a82ee464, type: 3}
     SpawnChance: 100
+  - name: ScoreDownPickUp
+    PickUpPrefab: {fileID: 2964176898735517316, guid: 713640d9dd21fa54b862443495164c00, type: 3}
+    SpawnChance: 100
+  _audioClip: {fileID: 8300000, guid: b99da9a57308d4ba1bee1cf1d9038376, type: 3}

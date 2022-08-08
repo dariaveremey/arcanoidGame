@@ -105,6 +105,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e9022f9685c1a47dbb0eb90c6dcc128e, type: 3}
   _spriteRenderer: {fileID: 3899063834313408534}
   _invisibility: 0
+  _pickUpSpawnChance: 0
+  _pickUpInfoArray: []
+  _audioClip: {fileID: 8300000, guid: 4e1ff8faed12a475eba9be0e46072269, type: 3}
 --- !u!68 &8838691608306028081
 EdgeCollider2D:
   m_ObjectHideFlags: 0

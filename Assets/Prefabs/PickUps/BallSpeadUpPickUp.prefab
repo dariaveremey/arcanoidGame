@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9109968229762517033}
   - component: {fileID: 8965178946370811156}
   - component: {fileID: 4237864284830143580}
-  - component: {fileID: 6915926635165023782}
+  - component: {fileID: 481612112790415128}
   m_Layer: 10
   m_Name: BallSpeadUpPickUp
   m_TagString: Untagged
@@ -124,7 +124,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &6915926635165023782
+--- !u!114 &481612112790415128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,7 +133,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 9109968229762517039}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a873f7096fde604fab5f5c30bae9c6a, type: 3}
+  m_Script: {fileID: 11500000, guid: dfd1e420856b4b340b841b68b9b9fbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: 5fdb13d3756c84fecac96f5a2d124370, type: 3}
+  _addScore: 10
   _speedMultiplier: 1.25

@@ -105,6 +105,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: eb31165d250684b23b9ea9a1c31af361, type: 3}
   _spriteRenderer: {fileID: 7799702918988750680}
   _invisibility: 1
+  _pickUpSpawnChance: 0.49
+  _pickUpInfoArray:
+  - name: ChangeLifeUpPickUp
+    PickUpPrefab: {fileID: 8393362561530039774, guid: 19a6e7ea46825734883d0897951ba3f9, type: 3}
+    SpawnChance: 100
+  - name: BallSizeUpPickUp
+    PickUpPrefab: {fileID: 8107122772092757132, guid: c305b9ecd3080444581a077929283f88, type: 3}
+    SpawnChance: 100
+  _audioClip: {fileID: 8300000, guid: a0010a1a0c474473b81729eb770c485f, type: 3}
 --- !u!58 &4026460232774358441
 CircleCollider2D:
   m_ObjectHideFlags: 0

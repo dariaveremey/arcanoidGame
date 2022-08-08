@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
@@ -14,6 +15,9 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _maxSpead = 10f;
     [SerializeField] private float _minSize = 0.45f;
     [SerializeField] private float _maxSize = 1.95f;
+    
+    [SerializeField] private float _explosiveRadious;
+    [SerializeField] private LayerMask _layerMask;
 
     [Range(0, 1)]
     [SerializeField] private float _xMin;
@@ -26,18 +30,23 @@ public class Ball : MonoBehaviour
 
     private bool _isStarted;
     private bool _isBallCloned;
+    private bool _isExplosiveActive;
     private Vector2 _startDirection;
     private Vector2 _isMultiBall;
     private Vector3 _startPosition;
     private Vector3 _startScale;
     private Vector3 _currentBallPosition;
     private Vector2 _contactPoint;
+   
 
     [SerializeField] private float _originalSpeed;
     [SerializeField] private float _originalOffset;
     [SerializeField] private float _offset;
     [SerializeField] private Ball _ball;
+
+    [SerializeField] private AudioSource _audioSource;
     private readonly Vector3 _originalSize = Vector3.one;
+    
 
     private readonly List<Ball> _saveBalls = new List<Ball>();
 
@@ -85,6 +94,16 @@ public class Ball : MonoBehaviour
         {
             StartBall();
         }
+    }
+
+    private void OnCollisionEnter2D()
+    {
+        _audioSource.Play();
+        if (_isExplosiveActive)
+        {
+            ExplosiveBlock();
+        }
+
     }
 
     #endregion
@@ -205,8 +224,10 @@ public class Ball : MonoBehaviour
         velocityMagnitude *= speedMultiplier;
 
         if (velocityMagnitude < _minSpead)
+        {
             velocityMagnitude = _minSpead;
-
+        }
+        
         _rb.velocity = velocity.normalized * velocityMagnitude;
     }
 
@@ -226,4 +247,31 @@ public class Ball : MonoBehaviour
     }
 
     #endregion
+
+
+    public void ExplosiveEffect(float time)
+    {
+        _isExplosiveActive = true;
+        StartCoroutine(WaitForEndExplosive(time));
+    }
+    
+    private IEnumerator WaitForEndExplosive(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _isExplosiveActive = false;
+
+    }
+
+    public void ExplosiveBlock()
+    {
+        Collider2D[] colliders=Physics2D.OverlapCircleAll(transform.position,_explosiveRadious,_layerMask);
+
+        foreach (Collider2D collider1 in colliders)
+        {
+            Debug.Log($"Explode '{collider1.gameObject.name}'");
+            Block blockToExplode = collider1.GetComponent<Block>();
+            blockToExplode.DestroyActions();
+        }
+    }
+    
 }

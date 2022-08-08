@@ -22,6 +22,7 @@ public class Block : MonoBehaviour
     [SerializeField] private float _pickUpSpawnChance;
     [SerializeField] private PickUpInfo[] _pickUpInfoArray;
 
+    [SerializeField] private AudioClip _audioClip;
     #endregion
 
 
@@ -80,7 +81,7 @@ public class Block : MonoBehaviour
         }
     }
 
-    private void ChangeDestroyNumber()
+    public void ChangeDestroyNumber()
     {
         _numberDestroy--;
         if (_numberDestroy == 0)
@@ -89,8 +90,9 @@ public class Block : MonoBehaviour
         }
     }
 
-    private void DestroyActions()
+    public virtual void DestroyActions()
     {
+        AudioPlayer.Instance.PlaySound(_audioClip);
         Statistics.Instance.IncrementScore(_points);
         Destroy(gameObject);
         SpawnPickUp();
