@@ -1199,8 +1199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ball: {fileID: 1536268819}
-  _lifes: 5
-  _coeficient: 0
 --- !u!1001 &912760644
 PrefabInstance:
   m_ObjectHideFlags: 0

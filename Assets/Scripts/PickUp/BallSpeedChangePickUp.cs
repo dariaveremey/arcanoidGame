@@ -1,25 +1,21 @@
- using UnityEngine;
+using UnityEngine;
 
- public class BallSpeedChangePickUp:PickUpBase
- {
+public class BallSpeedChangePickUp : PickUpBase
+{
+    #region Variables
 
-     #region Variables
+    [Header(nameof(BallSpeedChangePickUp))]
+    [SerializeField] private float _speedMultiplier;
 
-     [Header(nameof(BallSpeedChangePickUp))]
-     [SerializeField] private float _speedMultiplier;
-
-     #endregion
+    #endregion
 
 
-     #region Private methods
+    #region Private methods
 
-     protected override void ApplyEffect(Collision2D col)
-     {
-         FindObjectOfType<Ball>().ChangeSpead(_speedMultiplier);
-
-     }
-
-     #endregion
+    protected override void ApplyEffect(Collision2D col)
+    {
+        FindObjectOfType<Ball>().ChangeSpead(_speedMultiplier);
     }
 
-
+    #endregion
+}

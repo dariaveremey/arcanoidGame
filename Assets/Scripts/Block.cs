@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using System;
-using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour
@@ -23,6 +21,7 @@ public class Block : MonoBehaviour
     [SerializeField] private PickUpInfo[] _pickUpInfoArray;
 
     [SerializeField] private AudioClip _audioClip;
+
     #endregion
 
 
@@ -81,23 +80,6 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void ChangeDestroyNumber()
-    {
-        _numberDestroy--;
-        if (_numberDestroy == 0)
-        {
-            DestroyActions();
-        }
-    }
-
-    public virtual void DestroyActions()
-    {
-        AudioPlayer.Instance.PlaySound(_audioClip);
-        Statistics.Instance.IncrementScore(_points);
-        Destroy(gameObject);
-        SpawnPickUp();
-    }
-
     private void Invisibility()
     {
         if (_invisibility)
@@ -117,7 +99,7 @@ public class Block : MonoBehaviour
         {
             return;
         }
-        
+
         float random = Random.Range(0, 1f);
         if (random > _pickUpSpawnChance)
         {
@@ -151,7 +133,28 @@ public class Block : MonoBehaviour
 
         PickUpBase pickUpPrefab = _pickUpInfoArray[currentIndex].PickUpPrefab;
         Instantiate(pickUpPrefab, transform.position, Quaternion.identity);
-        
+    }
+
+    #endregion
+
+
+    #region Public methods
+
+    public virtual void DestroyActions()
+    {
+        AudioPlayer.Instance.PlaySound(_audioClip);
+        Statistics.Instance.IncrementScore(_points);
+        Destroy(gameObject);
+        SpawnPickUp();
+    }
+
+    public void ChangeDestroyNumber()
+    {
+        _numberDestroy--;
+        if (_numberDestroy == 0)
+        {
+            DestroyActions();
+        }
     }
 
     #endregion

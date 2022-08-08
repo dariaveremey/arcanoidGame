@@ -7,8 +7,7 @@ public class SingletonMonoBehavior<T> : MonoBehaviour
     public static T Instance { get; private set; }
 
     #endregion
-
-
+    
     #region Unity lyfecycle
 
     protected void Awake()

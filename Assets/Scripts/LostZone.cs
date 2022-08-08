@@ -1,13 +1,13 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LostZone : MonoBehaviour
 {
     #region Viriables
 
+    [Header("PadSize")]
     [SerializeField] private Ball _ball;
-    [SerializeField] private int _lifes;
-    [SerializeField] private int _coeficient;
+    //[SerializeField] private int _lifes;
+    //[SerializeField] private int _coeficient;
 
     private Vector3 startBallposition;
 
@@ -15,10 +15,6 @@ public class LostZone : MonoBehaviour
 
 
     #region Unity lifycycle
-
-    private void Start()
-    {
-    }
 
     private void OnCollisionEnter2D(Collision2D col)
 
@@ -28,19 +24,13 @@ public class LostZone : MonoBehaviour
             Statistics.Instance.IncrementLife(-1);
             Ball component = col.gameObject.GetComponent<Ball>();
             component.ToDefaultState();
-            component.MoveWithPad(); 
+            component.MoveWithPad();
         }
         else
         {
             Destroy(col.gameObject);
-
         }
     }
 
-    #endregion
-
-
-    #region Public methods
-    
     #endregion
 }

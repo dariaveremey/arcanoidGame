@@ -1,7 +1,5 @@
 using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Statistics : SingletonMonoBehavior<Statistics>
 {
@@ -26,7 +24,6 @@ public class Statistics : SingletonMonoBehavior<Statistics>
 
     public event Action<int> OnScoreChanged;
     public event Action<int> OnLifeLeft;
-    //public event Action<int> OnHeartLeft;
     public event Action<bool> OnLost;
 
     #endregion

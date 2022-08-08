@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class ScoreChangePickUp: PickUpBase
+public class ScoreChangePickUp : PickUpBase
 {
     #region Variables
 
     [Header(nameof(ScoreChangePickUp))]
-    [SerializeField] private int _score; 
+    [SerializeField] private int _score;
 
     #endregion
 

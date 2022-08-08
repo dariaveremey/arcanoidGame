@@ -1,20 +1,19 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameState : MonoBehaviour
+public class UIscreenManager : MonoBehaviour
 {
     #region Variables
 
+    [Header("Screens")]
     [SerializeField] private GameObject _gameOverScreen;
     [SerializeField] private GameObject _pauseMenuScreen;
     [SerializeField] private GameObject _gameWinScreen;
 
+    [Header("Buttons")]
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _exitButton;
-    
-
 
     #endregion
 
@@ -35,14 +34,12 @@ public class GameState : MonoBehaviour
         SceneLoader.Instance.OnGameWon += GameWin;
         _continueButton.onClick.AddListener(PauseManager.Instance.TogglePause);
         _exitButton.onClick.AddListener(ExitGame.ExitButtonClicked);
-        //WinManager.Instance.OnGameWon += GameWin;
     }
 
     private void OnDestroy()
     {
         Statistics.Instance.OnLost -= GameOver;
         PauseManager.Instance.OnPaused -= ContinueGame;
-        //WinManager.Instance.OnGameWon -= GameWin;
         SceneLoader.Instance.OnGameWon -= GameWin;
     }
 
@@ -63,7 +60,7 @@ public class GameState : MonoBehaviour
 
     private void GameWin(bool isWon)
     {
-        _gameWinScreen.SetActive(isWon); 
+        _gameWinScreen.SetActive(isWon);
     }
 
     #endregion

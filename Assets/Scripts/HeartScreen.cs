@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeartControler : SingletonMonoBehavior<HeartControler>
+public class HeartScreen : SingletonMonoBehavior<HeartScreen>
 {
     #region Variables
 
+    [Header("Heart")]
     [SerializeField] private Image[] _heartSprite;
     [SerializeField] private GameObject[] _heartPrefab;
 

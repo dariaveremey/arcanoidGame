@@ -14,14 +14,13 @@ public class GameManager : MonoBehaviour
     #region Unity lifecycle
 
     private void Awake()
-    {   
+    {
         FindObjectOfType<LevelManager>().OnBlocksDestroyed += PerformWin;
-        
     }
 
     private void Start()
     {
-       // SceneLoader.Instance.LoadStartSceneScene();
+        // SceneLoader.Instance.LoadStartSceneScene();
     }
 
     private void OnDestroy()
@@ -36,18 +35,12 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
-        #region Private methods
+    #region Public methods
 
-        #endregion
-
-
-        #region Public methods
-
-        public void PerformWin()
-        {
-            SceneLoader.Instance.LoadRandomScene();
-            //WinManager.Instance.Win();
-        }
-
-        #endregion
+    public void PerformWin()
+    {
+        SceneLoader.Instance.LoadRandomScene();
     }
+
+    #endregion
+}

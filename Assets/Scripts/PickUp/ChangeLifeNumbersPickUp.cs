@@ -5,7 +5,7 @@ class ChangeLifeNumbersPickUp : PickUpBase
     #region Variables
 
     [Header(nameof(ChangeLifeNumbersPickUp))]
-    [SerializeField] private int _lifesNumber; 
+    [SerializeField] private int _lifesNumber;
 
     #endregion
 

@@ -2,23 +2,29 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
 
 public class Ball : MonoBehaviour
 {
     #region Variables
 
+    [Header("Balls characteristics")]
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private Pad _pad;
+    [SerializeField] private Ball _ball;
     [SerializeField] private float _speed = 9f;
     [SerializeField] private float _minSpead = 1f;
     [SerializeField] private float _maxSpead = 10f;
     [SerializeField] private float _minSize = 0.45f;
     [SerializeField] private float _maxSize = 1.95f;
-    
+    [SerializeField] private float _originalSpeed;
+    [SerializeField] private float _originalOffset;
+    [SerializeField] private float _offset;
+
+    [Header("Explosion characteristics")]
     [SerializeField] private float _explosiveRadious;
     [SerializeField] private LayerMask _layerMask;
 
+    [Header("Random direction characteristics")]
     [Range(0, 1)]
     [SerializeField] private float _xMin;
     [Range(0, 1)]
@@ -27,6 +33,9 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _yMin;
     [Range(0, 1)]
     [SerializeField] private float _yMax;
+
+    [Header("AudioSource")]
+    [SerializeField] private AudioSource _audioSource;
 
     private bool _isStarted;
     private bool _isBallCloned;
@@ -37,21 +46,17 @@ public class Ball : MonoBehaviour
     private Vector3 _startScale;
     private Vector3 _currentBallPosition;
     private Vector2 _contactPoint;
-   
+    private bool _isNewBall;
 
-    [SerializeField] private float _originalSpeed;
-    [SerializeField] private float _originalOffset;
-    [SerializeField] private float _offset;
-    [SerializeField] private Ball _ball;
-
-    [SerializeField] private AudioSource _audioSource;
     private readonly Vector3 _originalSize = Vector3.one;
-    
-
     private readonly List<Ball> _saveBalls = new List<Ball>();
 
+    #endregion
+
+
+    #region Properties
+
     public int SavedBallLength => _saveBalls.Count;
-    private bool _isNewBall;
 
     #endregion
 
@@ -103,13 +108,7 @@ public class Ball : MonoBehaviour
         {
             ExplosiveBlock();
         }
-
     }
-
-    #endregion
-
-
-    #region Private methods
 
     private void OnDrawGizmos()
     {
@@ -119,6 +118,11 @@ public class Ball : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.position + (Vector3) _rb.velocity);
     }
+
+    #endregion
+
+
+    #region Private methods
 
     private void BallCreate(Ball ball)
     {
@@ -132,7 +136,6 @@ public class Ball : MonoBehaviour
         {
         }
     }
-   
 
     private void ResetBall()
     {
@@ -155,7 +158,7 @@ public class Ball : MonoBehaviour
     {
         transform.localScale = _originalSize;
     }
-    
+
     public void ResetOffset()
     {
         _offset = _originalOffset;
@@ -165,6 +168,12 @@ public class Ball : MonoBehaviour
     {
         _isStarted = true;
         StartMove();
+    }
+
+    private IEnumerator WaitForEndExplosive(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _isExplosiveActive = false;
     }
 
     #endregion
@@ -227,7 +236,7 @@ public class Ball : MonoBehaviour
         {
             velocityMagnitude = _minSpead;
         }
-        
+
         _rb.velocity = velocity.normalized * velocityMagnitude;
     }
 
@@ -246,32 +255,22 @@ public class Ball : MonoBehaviour
         }
     }
 
-    #endregion
-
-
     public void ExplosiveEffect(float time)
     {
         _isExplosiveActive = true;
         StartCoroutine(WaitForEndExplosive(time));
     }
-    
-    private IEnumerator WaitForEndExplosive(float time)
-    {
-        yield return new WaitForSeconds(time);
-        _isExplosiveActive = false;
-
-    }
 
     public void ExplosiveBlock()
     {
-        Collider2D[] colliders=Physics2D.OverlapCircleAll(transform.position,_explosiveRadious,_layerMask);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _explosiveRadious, _layerMask);
 
         foreach (Collider2D collider1 in colliders)
         {
-            Debug.Log($"Explode '{collider1.gameObject.name}'");
             Block blockToExplode = collider1.GetComponent<Block>();
             blockToExplode.DestroyActions();
         }
     }
-    
+
+    #endregion
 }

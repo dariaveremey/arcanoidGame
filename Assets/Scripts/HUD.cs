@@ -1,11 +1,11 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ScreenManager : MonoBehaviour
+public class HUD : MonoBehaviour
 {
     #region Variables
 
+    [Header("Lable")]
     [SerializeField] private TextMeshProUGUI _scoreLable;
     [SerializeField] private TextMeshProUGUI _lifeLable;
 
