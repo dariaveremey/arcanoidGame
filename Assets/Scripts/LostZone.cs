@@ -2,19 +2,11 @@ using UnityEngine;
 
 public class LostZone : MonoBehaviour
 {
-    #region Viriables
-
     [Header("PadSize")]
     [SerializeField] private Ball _ball;
-    //[SerializeField] private int _lifes;
-    //[SerializeField] private int _coeficient;
 
-    private Vector3 startBallposition;
-
-    #endregion
-
-
-    #region Unity lifycycle
+    private Vector3 _startBallposition;
+    
 
     private void OnCollisionEnter2D(Collision2D col)
 
@@ -31,6 +23,4 @@ public class LostZone : MonoBehaviour
             Destroy(col.gameObject);
         }
     }
-
-    #endregion
 }

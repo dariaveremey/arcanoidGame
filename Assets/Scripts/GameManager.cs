@@ -17,11 +17,7 @@ public class GameManager : MonoBehaviour
     {
         FindObjectOfType<LevelManager>().OnBlocksDestroyed += PerformWin;
     }
-
-    private void Start()
-    {
-        // SceneLoader.Instance.LoadStartSceneScene();
-    }
+    
 
     private void OnDestroy()
     {
