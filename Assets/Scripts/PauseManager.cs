@@ -39,6 +39,15 @@ public class PauseManager : SingletonMonoBehavior<PauseManager>
         Time.timeScale = IsPaused ? 0 : 1;
         OnPaused?.Invoke(IsPaused);
     }
+    
+    public void StopTime()
+    {
+        Time.timeScale = 0;
+    }
+    public void ResumeTime()
+    {
+        Time.timeScale = 1;
+    }
 
     #endregion
 }

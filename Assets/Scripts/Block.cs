@@ -11,9 +11,7 @@ public class Block : MonoBehaviour
     [SerializeField] private int _points;
 
     [SerializeField] private Sprite[] _sprites;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-
-    [SerializeField] private bool _invisibility;
+    [SerializeField] protected SpriteRenderer _spriteRenderer;
 
     [Header("PickUp")]
     [Range(0f, 1f)]
@@ -35,17 +33,15 @@ public class Block : MonoBehaviour
 
     #region Unity lifecycle
 
-    private void Start()
+    protected virtual void Start()
     {
         OnCreated?.Invoke(this);
-        Invisibility();
     }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
         ChangeDestroyNumber();
         SetSprite();
-        Visibility();
     }
 
     private void OnDestroy()
@@ -71,26 +67,13 @@ public class Block : MonoBehaviour
 
     #region Private methods
 
-    private void SetSprite()
+    protected virtual void SetSprite()
     {
         int index = _sprites.Length - _numberDestroy;
         if (_numberDestroy > 0)
         {
             _spriteRenderer.sprite = _sprites[index];
         }
-    }
-
-    private void Invisibility()
-    {
-        if (_invisibility)
-        {
-            _spriteRenderer.color = new Color(255, 255, 255, 0);
-        }
-    }
-
-    private void Visibility()
-    {
-        _spriteRenderer.color = new Color(255, 255, 255, 255);
     }
 
     private void SpawnPickUp()
@@ -148,7 +131,7 @@ public class Block : MonoBehaviour
         SpawnPickUp();
     }
 
-    public void ChangeDestroyNumber()
+    private void ChangeDestroyNumber()
     {
         _numberDestroy--;
         if (_numberDestroy == 0)

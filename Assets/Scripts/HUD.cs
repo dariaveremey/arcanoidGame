@@ -35,12 +35,12 @@ public class HUD : MonoBehaviour
 
     private void SetScoreLable(int score)
     {
-        _scoreLable.text = score.ToString();
+        _scoreLable.text = $"Score: {score.ToString()}";
     }
-
+    
     private void SetLifeLable(int life)
     {
-        _lifeLable.text = life.ToString();
+        _lifeLable.text = $"Hp: {life.ToString()}";
     }
 
     #endregion
