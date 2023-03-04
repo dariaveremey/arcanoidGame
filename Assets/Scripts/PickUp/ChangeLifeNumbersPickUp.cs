@@ -14,7 +14,10 @@ class ChangeLifeNumbersPickUp : PickUpBase
 
     protected override void ApplyEffect(Collision2D col)
     {
-        Statistics.Instance.IncrementLife(_lifesNumber);
+        foreach (Ball ball in BallHandler.Instance.Balls)
+        {
+            Statistics.Instance.IncrementLife(_lifesNumber);
+        }
     }
 
     #endregion

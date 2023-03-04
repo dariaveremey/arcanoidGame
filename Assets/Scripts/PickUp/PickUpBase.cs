@@ -16,23 +16,12 @@ public abstract class PickUpBase : MonoBehaviour
     {
         if (!col.gameObject.CompareTag(Tags.Pad))
             return;
-        PlayMusic();
-        PlayParticle();
         ApplyEffect(col);
         AudioPlayer.Instance.PlaySound(_audioClip);
         Statistics.Instance.IncrementScore(_addScore);
         Destroy(gameObject);
     }
-
-    private void PlayParticle()
-    {
-        //TODO: Add Particle
-    }
-
-    private void PlayMusic()
-    {
-        //ToDO: Add Music
-    }
+    
 
     protected abstract void ApplyEffect(Collision2D col);
 

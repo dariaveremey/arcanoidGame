@@ -1,16 +1,18 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : SingletonMonoBehavior<GameManager>
 
 {
     #region Variables
 
     private bool _isStarted;
+    
     [SerializeField] private int _startHp;
 
     #endregion
 
-
+   
+    
     #region Unity lifecycle
 
     private void Awake()
@@ -38,5 +40,9 @@ public class GameManager : MonoBehaviour
         SceneLoader.Instance.LoadRandomScene();
     }
 
+    public void ResetGame()
+    {
+        BallHandler.Instance.ResetBallHandler();
+    }
     #endregion
 }

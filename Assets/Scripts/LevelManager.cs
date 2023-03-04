@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager :MonoBehaviour
 {
     #region Viriables
 
     private int _blocksCount;
-
+    
     #endregion
 
 
@@ -51,6 +51,7 @@ public class LevelManager : MonoBehaviour
     {
         _blocksCount++;
     }
+    
 
     #endregion
 }

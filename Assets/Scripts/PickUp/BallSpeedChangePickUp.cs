@@ -14,8 +14,12 @@ public class BallSpeedChangePickUp : PickUpBase
 
     protected override void ApplyEffect(Collision2D col)
     {
-        FindObjectOfType<Ball>().ChangeSpead(_speedMultiplier);
-    }
+        foreach (Ball ball in BallHandler.Instance.Balls)
+        {
+            FindObjectOfType<Ball>().ChangeSpeed(_speedMultiplier);
+        }
 
-    #endregion
+        #endregion
+    }
+    
 }

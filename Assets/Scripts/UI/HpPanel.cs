@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI
@@ -13,12 +12,12 @@ namespace UI
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
-            HpChanged(Statistics.Instance.LifeNumber);
         }
 
         private void Start()
         {
             Statistics.Instance.OnLifeLeft += HpChanged;
+            HpChanged(Statistics.Instance.LifeNumber);
         }
 
         private void OnDestroy()
@@ -29,7 +28,16 @@ namespace UI
         private void HpChanged(int hp)
         {
             DestroyCurrentCells();
-            Instantiate(_cellPrefab, _rectTransform);
+            CreateNewCells(hp);
+        }
+
+        private void CreateNewCells(int hp)
+        {
+            for (int i = 0; i < hp; i++)
+            {
+                GameObject cell = Instantiate(_cellPrefab, _rectTransform);
+                _cells.Add(cell);
+            }
         }
 
         private void DestroyCurrentCells()
@@ -38,6 +46,7 @@ namespace UI
             {
                 Destroy(cell);
             }
+
             _cells.Clear();
         }
     }

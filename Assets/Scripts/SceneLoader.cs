@@ -27,9 +27,6 @@ public class SceneLoader : SingletonMonoBehavior<SceneLoader>
 
     #endregion
 
-    //
-    
-
     #region Public methods
 
     public void LoadRandomScene()
@@ -49,8 +46,14 @@ public class SceneLoader : SingletonMonoBehavior<SceneLoader>
 
     public void LoadStartSceneScene()
     {
+        ResetScenes();
         SceneManager.LoadScene(_scenesNames[_randomScene]);
         _scenesNames.Remove(_scenesNames[_randomScene]);
+    }
+
+    public void ResetScenes()
+    { 
+        _scenesNames = new List<string>() {"GameScene 1", "Level 2", "Level 3", "Level 4", "Level 5"};
     }
 
     #endregion

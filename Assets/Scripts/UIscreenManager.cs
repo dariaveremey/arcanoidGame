@@ -34,6 +34,7 @@ public class UIscreenManager : MonoBehaviour
         SceneLoader.Instance.OnGameWon += GameWin;
         _continueButton.onClick.AddListener(PauseManager.Instance.TogglePause);
         _exitButton.onClick.AddListener(ExitGame.ExitButtonClicked);
+        _restartButton.onClick.AddListener(RestartGame);
     }
 
     private void OnDestroy()
@@ -51,6 +52,8 @@ public class UIscreenManager : MonoBehaviour
     private void GameOver(bool isGameOver)
     {
         _gameOverScreen.SetActive(isGameOver);
+        GameManager.Instance.ResetGame();
+        Statistics.Instance.ResetStatistics();
     }
 
     private void ContinueGame(bool isPaused)
@@ -62,6 +65,12 @@ public class UIscreenManager : MonoBehaviour
     {
         _gameWinScreen.SetActive(isWon);
     }
-
+    private void RestartGame()
+    {
+        GameWin(false);
+        SceneLoader.Instance.LoadRandomScene();
+        GameManager.Instance.ResetGame();
+        Statistics.Instance.ResetStatistics();
+    }
     #endregion
 }

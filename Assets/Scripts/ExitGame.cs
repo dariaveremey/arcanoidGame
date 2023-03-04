@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class ExitGame
+public static class ExitGame
 {
     #region Public methods
 

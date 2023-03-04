@@ -14,7 +14,10 @@ class ChangingBallSizePickUp : PickUpBase
 
     protected override void ApplyEffect(Collision2D col)
     {
-        FindObjectOfType<Ball>().ChangeSize(_scaleChange);
+        foreach (Ball ball in BallHandler.Instance.Balls)
+        {
+            FindObjectOfType<Ball>().ChangeSize(_scaleChange);
+        }
     }
 
     #endregion

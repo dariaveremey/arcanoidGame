@@ -78,10 +78,9 @@ public class Block : MonoBehaviour
 
     private void SpawnPickUp()
     {
-        if (_pickUpInfoArray == null && _pickUpInfoArray.Length == 0)
-        {
+        if (_pickUpInfoArray == null || _pickUpInfoArray.Length == 0)
             return;
-        }
+
 
         float random = Random.Range(0, 1f);
         if (random > _pickUpSpawnChance)

@@ -12,14 +12,14 @@ GameObject:
   - component: {fileID: 6961080175183764417}
   - component: {fileID: 7105858462927513340}
   - component: {fileID: 2609916532068501428}
-  - component: {fileID: 309921044331373918}
+  - component: {fileID: -3334423723641979718}
   m_Layer: 6
   m_Name: MultyBallPickUp
   m_TagString: FalseBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6961080175183764418
 Transform:
   m_ObjectHideFlags: 0
@@ -124,7 +124,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &309921044331373918
+--- !u!114 &-3334423723641979718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,5 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a6bda34fe5fe124e918fa2d26b9feae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioClip: {fileID: 0}
+  _audioClip: {fileID: 8300000, guid: ff5f85da24bc943d1abdc5760a22bc81, type: 3}
+  _addScore: 0
   _multiBall: 0

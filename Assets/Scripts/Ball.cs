@@ -1,28 +1,24 @@
-using System.Collections;
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using System.Collections.Generic;
 
 public class Ball : MonoBehaviour
 {
     #region Variables
 
-    [Header("Balls characteristics")]
-    [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private Pad _pad;
     [SerializeField] private Ball _ball;
+    [SerializeField] private Rigidbody2D _rb;
+
+    [Header("Balls characteristics")]
     [SerializeField] private float _speed = 9f;
-    [SerializeField] private float _minSpead = 1f;
-    [SerializeField] private float _maxSpead = 10f;
+    [SerializeField] private float _minSpeed = 1f;
+    [SerializeField] private float _maxSpeed = 10f;
+
     [SerializeField] private float _minSize = 0.45f;
     [SerializeField] private float _maxSize = 1.95f;
     [SerializeField] private float _originalSpeed;
-    [SerializeField] private float _originalOffset;
-    [SerializeField] private float _offset;
-
-    [Header("Explosion characteristics")]
-    [SerializeField] private float _explosiveRadious;
-    [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private float _offset = 6f;
 
     [Header("Random direction characteristics")]
     [Range(0, 1)]
@@ -39,45 +35,39 @@ public class Ball : MonoBehaviour
 
     private bool _isStarted;
     private bool _isBallCloned;
+    private bool _isNewBall;
     private bool _isExplosiveActive;
     private Vector2 _startDirection;
     private Vector2 _isMultiBall;
     private Vector3 _startPosition;
     private Vector3 _startScale;
-    private Vector3 _currentBallPosition;
     private Vector2 _contactPoint;
-    private bool _isNewBall;
 
     private readonly Vector3 _originalSize = Vector3.one;
-    private readonly List<Ball> _saveBalls = new List<Ball>();
+    private bool _isFireBallActive;
 
     #endregion
 
 
-    #region Properties
-
-    public int SavedBallLength => _saveBalls.Count;
-
-    #endregion
+    public static event Action<Ball> OnBallFell;
+    public static event Action<Ball> OnBallCreated;
 
 
     #region Unity lifecycle
 
-    private void Awake()
-    {
-        _startPosition = transform.position;
-    }
-
     private void Start()
     {
-        if (_isBallCloned)
+        if (_isNewBall)
         {
             BallCreate(this);
+            CancelMultiBall();
             return;
         }
 
         _speed = _originalSpeed;
+
         ResetBall();
+
         if (Statistics.Instance.NeedAutoPlay)
         {
             StartBall();
@@ -86,12 +76,10 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
-        _currentBallPosition = transform.position;
         if (_isStarted)
         {
             return;
         }
-
 
         MoveWithPad();
 
@@ -101,22 +89,45 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D()
+    public void Clone(Ball ball)
     {
-        _audioSource.Play();
-        if (_isExplosiveActive)
+        _isNewBall = true;
+        _speed = ball._speed;
+        StartBall();
+    }
+
+    public void CancelMultiBall()
+    {
+        _isNewBall = false;
+    }
+
+    public void OnBallFall()
+    {
+        OnBallFell?.Invoke(this);
+        if (BallHandler.Instance.BallCount == 0)
         {
-            ExplosiveBlock();
+            ResetBall();
+            _pad.ResetPad();
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3) _startDirection);
+        Vector3 transformPosition = transform.position;
 
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(transformPosition, transformPosition + (Vector3) _startDirection);
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3) _rb.velocity);
+        Gizmos.DrawLine(transformPosition, transformPosition + (Vector3) _rb.velocity);
+    }
+
+    private void OnCollisionEnter2D()
+    {
+        _audioSource.Play();
     }
 
     #endregion
@@ -126,15 +137,7 @@ public class Ball : MonoBehaviour
 
     private void BallCreate(Ball ball)
     {
-        _saveBalls.Add(ball);
-    }
-
-    private void BallDestroy(Ball ball)
-    {
-        _saveBalls.Remove(ball);
-        if (SavedBallLength == 0)
-        {
-        }
+        OnBallCreated?.Invoke(ball);
     }
 
     private void ResetBall()
@@ -145,8 +148,8 @@ public class Ball : MonoBehaviour
 
         ResetSize();
         ResetSpeed();
-        MoveWithPad();
         ResetOffset();
+        MoveWithPad();
     }
 
     private void ResetSpeed()
@@ -161,7 +164,10 @@ public class Ball : MonoBehaviour
 
     public void ResetOffset()
     {
-        _offset = _originalOffset;
+        _contactPoint = Vector2.zero;
+        Vector3 hh = transform.position;
+        hh.y -= _offset;
+        transform.position = hh;
     }
 
     private void StartBall()
@@ -170,19 +176,12 @@ public class Ball : MonoBehaviour
         StartMove();
     }
 
-    private IEnumerator WaitForEndExplosive(float time)
-    {
-        yield return new WaitForSeconds(time);
-        _isExplosiveActive = false;
-    }
-
     #endregion
 
 
     #region Public methods
 
-    public void StartMove()
-
+    private void StartMove()
     {
         Vector2 randomDirection = new Vector2(Random.Range(_xMin, _xMax), Random.Range(_yMin, _yMax));
         _startDirection = randomDirection.normalized;
@@ -198,11 +197,10 @@ public class Ball : MonoBehaviour
         transform.position = currentPosition;
     }
 
-    public void ChangeSize(float scale)
+    public void ChangeSize(float multiplierScale)
     {
         Vector3 changeScale = transform.localScale;
-        changeScale =
-            new Vector3(changeScale.x * scale, changeScale.y * scale, changeScale.z);
+        changeScale *= multiplierScale;
         if (changeScale.x < _minSize || changeScale.y < _minSize)
         {
             changeScale =
@@ -215,7 +213,6 @@ public class Ball : MonoBehaviour
                 new Vector3(_maxSize, _maxSize, changeScale.z);
         }
 
-
         transform.localScale = changeScale;
     }
 
@@ -224,18 +221,19 @@ public class Ball : MonoBehaviour
         _isStarted = false;
         _rb.velocity = Vector2.zero;
         transform.position = _startPosition;
+        ResetSize();
     }
 
-    public void ChangeSpead(float speedMultiplier)
+    public void ChangeSpeed(float speedMultiplier)
     {
         Vector2 velocity = _rb.velocity;
         float velocityMagnitude = velocity.magnitude;
         velocityMagnitude *= speedMultiplier;
 
-        if (velocityMagnitude < _minSpead)
-        {
-            velocityMagnitude = _minSpead;
-        }
+        if (velocityMagnitude < _minSpeed)
+            velocityMagnitude = _minSpeed;
+        if (velocityMagnitude > _maxSpeed)
+            velocityMagnitude = _maxSpeed;
 
         _rb.velocity = velocity.normalized * velocityMagnitude;
     }
@@ -244,32 +242,6 @@ public class Ball : MonoBehaviour
     {
         _isStarted = false;
         _contactPoint = contactPoint;
-        _offset = 6f;
-    }
-
-    public void OnBallFall()
-    {
-        BallDestroy(this);
-        if (SavedBallLength == 0)
-        {
-        }
-    }
-
-    public void ExplosiveEffect(float time)
-    {
-        _isExplosiveActive = true;
-        StartCoroutine(WaitForEndExplosive(time));
-    }
-
-    public void ExplosiveBlock()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _explosiveRadious, _layerMask);
-
-        foreach (Collider2D collider1 in colliders)
-        {
-            Block blockToExplode = collider1.GetComponent<Block>();
-            blockToExplode.DestroyActions();
-        }
     }
 
     #endregion

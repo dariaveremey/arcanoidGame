@@ -2,7 +2,6 @@
 
 public class Invisibleblocks : Block
 {
-
     private bool _invisible;
     protected override void Start()
     {
@@ -12,13 +11,12 @@ public class Invisibleblocks : Block
     }
 
     protected override void SetSprite()
-    {  
+    {
         SetAlpha(1f);
         if(_invisible)
             base.SetSprite();
         _invisible = true;
-
-
+        
     }
 
     private void SetAlpha(float alpha)

@@ -7,9 +7,7 @@ public class Pad : MonoBehaviour
     #region Variables
 
     [Header("PadSize")]
-    [SerializeField] private Vector3 _minSize;
-    [SerializeField] private Vector3 _maxSize;
-
+    [SerializeField] private float _deltaTime=20f;
     private Ball _ball;
     private bool _isMagnetActive;
     private Vector2 _contactPoint;
@@ -86,6 +84,13 @@ public class Pad : MonoBehaviour
         yield return new WaitForSeconds(time);
         _isMagnetActive = false;
         _ball.ResetOffset();
+        
+    }
+    
+    private IEnumerator WaitForEndChangeSize(float time)
+    {
+        yield return new WaitForSeconds(time);
+        ResetSize();
     }
 
     #endregion
@@ -98,6 +103,7 @@ public class Pad : MonoBehaviour
         Vector3 changeScale = transform.localScale;
         changeScale = new Vector3(changeScale.x + scaleChange, changeScale.y,
             changeScale.z);
+        StartCoroutine( WaitForEndChangeSize(_deltaTime));
     }
 
     public void MagnetEffect(float time)
@@ -105,11 +111,12 @@ public class Pad : MonoBehaviour
         _isMagnetActive = true;
         StartCoroutine(WaitForEndMagnet(time));
     }
+    
+    #endregion
+
 
     public void ResetPad()
     {
-        ResetSize();
+        transform.localScale = _originalSize;
     }
-
-    #endregion
 }

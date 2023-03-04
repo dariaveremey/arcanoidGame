@@ -138,4 +138,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioClip: {fileID: 8300000, guid: 5039414d94a6e4e70a5ab9e8833e992a, type: 3}
   _addScore: -10
-  _speedMultiplier: -1.25
+  _speedMultiplier: -0.15
